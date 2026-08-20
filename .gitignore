@@ -1,0 +1,19 @@
+# Local editor and operating-system files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Local configuration and credentials
+.env
+.env.*
+*.local
+*.pem
+*.key
+
+# Dependency and temporary output directories
+node_modules/
+temp/
+tmp/
+logs/
+dist/

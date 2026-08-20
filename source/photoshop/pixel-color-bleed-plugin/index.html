@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        :root {
+            --bg: #252525;
+            --panel: #303030;
+            --text: #f0f0f0;
+            --muted: #b7b7b7;
+            --border: #555555;
+            --accent: #3d8bfd;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-width: 260px;
+            height: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            margin: 0;
+            padding: 12px 14px 16px;
+            color: var(--text);
+            background: var(--bg);
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+            overflow: hidden;
+        }
+
+        .panel-shell {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            min-height: 0;
+        }
+
+        .panel-scroll {
+            flex: 1 1 auto;
+            min-height: 0;
+            overflow-y: auto;
+            padding-right: 3px;
+        }
+
+        .panel-footer {
+            flex: 0 0 auto;
+            padding-top: 8px;
+            background: var(--bg);
+            border-top: 1px solid #3a3a3a;
+        }
+
+        h1 {
+            margin: 0 0 5px;
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        .hint {
+            margin: 0 0 12px;
+            color: var(--muted);
+            line-height: 1.4;
+        }
+
+        .field {
+            margin: 9px 0;
+        }
+
+        .field-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        label {
+            color: var(--text);
+        }
+
+        input[type="number"] {
+            width: 84px;
+            padding: 5px 6px;
+            color: var(--text);
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 3px;
+        }
+
+        input.adjustment-value {
+            width: 70px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            margin-top: 7px;
+        }
+
+        .value {
+            min-width: 42px;
+            color: var(--muted);
+            text-align: right;
+        }
+
+        .checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 12px 0;
+        }
+
+        button {
+            width: 100%;
+            min-height: 36px;
+            margin-top: 6px;
+            padding: 8px 10px;
+            color: white;
+            background: var(--accent);
+            border: 0;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        button:disabled {
+            opacity: 0.55;
+        }
+
+        #status {
+            min-height: 28px;
+            margin-top: 8px;
+            color: var(--muted);
+            line-height: 1.35;
+        }
+    </style>
+</head>
+<body>
+    <div class="panel-shell">
+    <div class="panel-scroll">
+    <h1>颜色像素扩散</h1>
+    <p class="hint">选择一个图像图层，在其下方生成实心、不透明的颜色扩展层。</p>
+
+    <div class="field field-row">
+        <label for="radius">扩展像素</label>
+        <input id="radius" type="number" min="1" max="256" step="1" value="8">
+    </div>
+
+    <div class="field">
+        <div class="field-row">
+            <label for="hue">扩展色相</label>
+            <input id="hueNumber" class="adjustment-value" type="number" min="-180" max="180" step="1" value="0">
+        </div>
+        <input id="hue" type="range" min="-180" max="180" step="1" value="0">
+    </div>
+
+    <div class="field">
+        <div class="field-row">
+            <label for="saturation">扩展饱和度</label>
+            <input id="saturationNumber" class="adjustment-value" type="number" min="-100" max="100" step="1" value="0">
+        </div>
+        <input id="saturation" type="range" min="-100" max="100" step="1" value="0">
+    </div>
+
+    <div class="field">
+        <div class="field-row">
+            <label for="brightness">扩展明度</label>
+            <input id="brightnessNumber" class="adjustment-value" type="number" min="-100" max="100" step="1" value="0">
+        </div>
+        <input id="brightness" type="range" min="-100" max="100" step="1" value="0">
+    </div>
+
+    <label class="checkbox">
+        <input id="expandCanvas" type="checkbox">
+        自动扩展画布，避免边缘被裁切
+    </label>
+
+    </div>
+    <div class="panel-footer">
+    <button id="run">生成颜色扩展</button>
+    <div id="status"></div>
+    </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
