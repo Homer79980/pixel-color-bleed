@@ -4,7 +4,7 @@
         "default": "\u989c\u8272\u50cf\u7d20\u6269\u6563"
     },
     "manifestVersion": 4,
-    "version": "1.11.0",
+    "version": "0.1.0",
     "main": "index.html",
     "entrypoints": [
         {
