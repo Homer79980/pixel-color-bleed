@@ -59,12 +59,13 @@ that needs extra pixels around its silhouette.
 
 - `source/photoshop/pixel-color-bleed-plugin/`: Photoshop UXP source and icons.
 - `releases/0.1.0/`: release notes for version 0.1.0.
+- `releases/0.1.1/`: release notes for version 0.1.1.
 - GitHub Releases: downloadable `.ccx` plugin packages.
 
 ### Install
 
-1. Open the [v0.1.0 Release](https://github.com/Homer79980/pixel-color-bleed/releases/tag/v0.1.0).
-2. Download `pixel-color-bleed-0.1.0.ccx`.
+1. Open the [v0.1.1 Release](https://github.com/Homer79980/pixel-color-bleed/releases/tag/v0.1.1).
+2. Download `pixel-color-bleed-0.1.1.ccx`.
 3. Install the `.ccx` file through Photoshop plugin management.
 4. Open the `Color Pixel Bleed` panel from the Plugins menu.
 5. Select an RGB image layer with transparency and run the panel.

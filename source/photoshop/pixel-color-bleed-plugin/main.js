@@ -2640,9 +2640,11 @@ function buildBleed(sourceData, sourceWidth, sourceHeight, radius, blend, hue, b
 async function runBleed() {
     const radius = clamp(parseInt($("radius").value, 10) || 0, 1, 256);
     const blend = ALWAYS_ON_BLEND;
-    const hue = clamp(parseInt($("hue").value, 10) || 0, -180, 180);
-    const brightness = clamp(parseInt($("brightness").value, 10) || 0, -100, 100);
-    const saturation = clamp(parseInt($("saturation").value, 10) || 0, -100, 100);
+    // Read the signed numeric fields. The native UXP ranges use non-negative
+    // coordinates internally for reliable midpoint initialization.
+    const hue = clamp(parseInt($("hueNumber").value, 10) || 0, -180, 180);
+    const brightness = clamp(parseInt($("brightnessNumber").value, 10) || 0, -100, 100);
+    const saturation = clamp(parseInt($("saturationNumber").value, 10) || 0, -100, 100);
     const shouldExpandCanvas = $("expandCanvas").checked;
 
     if (!app.activeDocument) {
@@ -2729,14 +2731,39 @@ async function runBleed() {
     }, {commandName: "Generate Solid Color Bleed"});
 }
 
-function bindAdjustment(rangeId, numberId) {
+function bindAdjustment(rangeId, numberId, offset) {
     const range = $(rangeId);
     const number = $(numberId);
-    const min = Number(range.min);
-    const max = Number(range.max);
+    const rangeMin = Number(range.min);
+    const rangeMax = Number(range.max);
+    const numberMin = Number(number.min);
+    const numberMax = Number(number.max);
+
+    const toDisplayValue = (rangeValue) => clamp(
+        Math.round(Number(rangeValue) - offset),
+        numberMin,
+        numberMax
+    );
+
+    const toRangeValue = (displayValue) => clamp(
+        Math.round(Number(displayValue) + offset),
+        rangeMin,
+        rangeMax
+    );
+
+    const setValue = (displayValue) => {
+        const value = clamp(Math.round(displayValue), numberMin, numberMax);
+        number.value = String(value);
+        range.value = String(toRangeValue(value));
+    };
+
+    // Explicitly initialize both controls. This avoids UXP restoring a stale
+    // endpoint or misreading a signed range on first load.
+    const initialValue = Number(number.value);
+    setValue(Number.isFinite(initialValue) ? initialValue : 0);
 
     range.addEventListener("input", () => {
-        number.value = range.value;
+        setValue(toDisplayValue(range.value));
     });
 
     const syncFromNumber = () => {
@@ -2746,21 +2773,19 @@ function bindAdjustment(rangeId, numberId) {
         }
         const parsed = Number(raw);
         if (!Number.isFinite(parsed)) {
-            number.value = range.value;
+            setValue(toDisplayValue(range.value));
             return;
         }
-        const value = clamp(Math.round(parsed), min, max);
-        range.value = String(value);
-        number.value = String(value);
+        setValue(parsed);
     };
 
     number.addEventListener("input", syncFromNumber);
     number.addEventListener("change", syncFromNumber);
 }
 
-bindAdjustment("hue", "hueNumber");
-bindAdjustment("saturation", "saturationNumber");
-bindAdjustment("brightness", "brightnessNumber");
+bindAdjustment("hue", "hueNumber", 180);
+bindAdjustment("saturation", "saturationNumber", 100);
+bindAdjustment("brightness", "brightnessNumber", 100);
 
 $("run").addEventListener("click", async () => {
     const button = $("run");

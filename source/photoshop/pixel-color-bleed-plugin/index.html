@@ -154,7 +154,9 @@
             <label for="hue">扩展色相</label>
             <input id="hueNumber" class="adjustment-value" type="number" min="-180" max="180" step="1" value="0">
         </div>
-        <input id="hue" type="range" min="-180" max="180" step="1" value="0">
+        <!-- UXP can initialize signed ranges incorrectly on some Photoshop installations.
+             Keep the native range non-negative and map it to the signed value shown above. -->
+        <input id="hue" type="range" min="0" max="360" step="1" value="180">
     </div>
 
     <div class="field">
@@ -162,7 +164,7 @@
             <label for="saturation">扩展饱和度</label>
             <input id="saturationNumber" class="adjustment-value" type="number" min="-100" max="100" step="1" value="0">
         </div>
-        <input id="saturation" type="range" min="-100" max="100" step="1" value="0">
+        <input id="saturation" type="range" min="0" max="200" step="1" value="100">
     </div>
 
     <div class="field">
@@ -170,7 +172,7 @@
             <label for="brightness">扩展明度</label>
             <input id="brightnessNumber" class="adjustment-value" type="number" min="-100" max="100" step="1" value="0">
         </div>
-        <input id="brightness" type="range" min="-100" max="100" step="1" value="0">
+        <input id="brightness" type="range" min="0" max="200" step="1" value="100">
     </div>
 
     <label class="checkbox">
